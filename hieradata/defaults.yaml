@@ -1,0 +1,14 @@
+ora_install::database::version:                           12.1.0.2
+profile::oradb::software::version:                        12.1.0.2
+profile::oradb::software::file_name:                      linuxamd64_12102_database
+profile::oradb::software::type:                           EE
+
+profile::download_dir:                                     /data/install
+profile::source_dir:                                       puppet:///modules/software
+
+profile::oradb::base:                                      /u01/app/oracle
+profile::oradb::os_user:                                   oracle
+profile::oradb::os_group:                                  oinstall
+profile::oradb::system_password:                           welcome01
+profile::oradb::sys_password:                              welcome01
+profile::oradb::home:                                      /u01/app/oracle/product/12.1.0/db_home1
