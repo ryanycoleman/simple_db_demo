@@ -35,5 +35,6 @@ The software must be placed in `modules/software/files`. It must contain the nex
 
 
 ### Oracle Database
-- linuxamd64_12102_database_1of2.zip
-- linuxamd64_12102_database_2of2.zip
+- linuxx64_12201_database.zip
+
+You can download this file from [here](http://www.oracle.com/technetwork/database/enterprise-edition/downloads/oracle12c-linux-12201-3608234.html)

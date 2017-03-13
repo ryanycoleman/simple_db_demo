@@ -27,6 +27,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       srv.vm.network 'private_network', ip: server['public_ip']
       srv.vm.network 'private_network', ip: server['private_ip'], virtualbox__intnet: true
       srv.vm.synced_folder '.', '/vagrant', type: :virtualbox
+      #
+      # Fix hostnames because Vagrant mixes it up.
+      #
+      srv.vm.provision :shell, inline: <<-EOD
+cat > /etc/hosts<< "EOF"
+127.0.0.1 localhost.localdomain localhost4 localhost4.localdomain4
+192.168.253.10 master.example.com puppet master
+#{server['public_ip']} #{hostname}.example.com #{hostname}
+EOF
+EOD
       case server['type']
       when 'masterless'
         srv.vm.box = 'enterprisemodules/centos-7.2-x86_64-puppet' unless server['box']
@@ -60,16 +70,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         srv.vm.provision :shell, inline: 'puppet agent -t || true'
       when 'pe-agent'
         srv.vm.box = 'enterprisemodules/centos-7.2-x86_64-nocm' unless server['box']
-        #
-        # Fix hostnames because Vagrant mixes it up.
-        #
-        srv.vm.provision :shell, inline: <<-EOD
-cat > /etc/hosts<< "EOF"
-127.0.0.1 localhost.localdomain localhost4 localhost4.localdomain4
-192.168.253.10 master.example.com puppet master
-#{server['public_ip']} #{hostname}.example.com #{hostname}
-EOF
-EOD
         #
         # First we need to instal the agent.
         #

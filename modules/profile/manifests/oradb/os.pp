@@ -15,7 +15,7 @@ class profile::oradb::os
       hasstatus => true,
   }
 
-  $groups = ['oinstall','dba']
+  $groups = ['oinstall','dba', 'oper']
 
   group {'oinstall':
     ensure => 'present',
@@ -25,6 +25,11 @@ class profile::oradb::os
   group {'dba':
     ensure => 'present',
     gid    => 54322,
+  }
+
+  group {'oper':
+    ensure => 'present',
+    gid    => 54323,
   }
 
 

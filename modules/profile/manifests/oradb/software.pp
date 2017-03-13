@@ -38,7 +38,7 @@ class profile::oradb::software(
 
   ora_install::net{ 'config net8':
     oracle_home  => $profile::oradb::home,
-    version      => '12.1',        # Different version then the oracle version
+    version      => '12.2',        # Different version then the oracle version
     download_dir => '/tmp',
   } ->
 
