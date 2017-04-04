@@ -34,7 +34,7 @@ db_recovery_file_dest_size=20480m
 ###########################################
 # Miscellaneous
 ###########################################
-compatible=12.1.0.2.0
+compatible=12.2.0.1.0
 diagnostic_dest=/u01/app/oracle
 
 ###########################################
@@ -45,7 +45,7 @@ processes=300
 ###########################################
 # SGA Memory
 ###########################################
-sga_target=8192m
+sga_target=1024m
 
 ###########################################
 # Security and Auditing
@@ -57,7 +57,7 @@ remote_login_passwordfile=EXCLUSIVE
 ###########################################
 # Sort, Hash Joins, Bitmap Indexes
 ###########################################
-pga_aggregate_target=4096m
+pga_aggregate_target=256m
 
 ###########################################
 # System Managed Undo and Rollback Segments
