@@ -16,7 +16,7 @@ $ vagrant up <ml-db112|ml-db121|ml-db122>
 You can also test with a Puppet Enterprise server. To do so, add `pe-` for the name when using vagrant:
 
 ```
-$ vagrant up pe-master
+$ vagrant up pe-dbmaster
 $ vagrant up <pe-db112|pe-db121|pe-db122>
 ```
 
