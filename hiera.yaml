@@ -1,22 +1,15 @@
 ---
-:backends:
-  - yaml
-:hierarchy:
-#
-# Look at the node files and if not found, fall back to the defaults
-#
-- "nodes/%{::fqdn}"
-- "%{::deployment_zone}"
-- defaults
-#
-# When using a puppet master you should use the trusted name in the certificate
-#
-# - "nodes/%{::trusted.certname}"
+version: 5
+defaults:  # Used for any hierarchy level that omits these keys.
+  datadir: hieradata         # This path is relative to hiera.yaml's directory.
+  data_hash: yaml_data       # Use the built-in YAML backend.
 
+hierarchy:
+  - name: "Per-node data"                   # Human-readable name.
+    path: "nodes/%{trusted.certname}.yaml"  # File path, relative to datadir.
 
-:yaml:
-# datadir is empty here, so hiera uses its defaults:
-# - /etc/puppetlabs/code/environments/%{environment}/hieradata on *nix
-# - %CommonAppData%\PuppetLabs\code\environments\%{environment}\hieradata on Windows
-# When specifying a datadir, make sure the directory exists.
-  :datadir: /etc/puppetlabs/code/environments/production/hieradata
+  - name: "Deployment Zone" # Uses custom facts.
+    path: "deployment_zones/%{::deployment_zone}.yaml"
+
+  - name: "Defaults"
+    path: "defaults.yaml"
