@@ -1,3 +1,4 @@
+# TODO: Docs
 class profile::base()
 {
   contain "profile::base::${::deployment_zone}"

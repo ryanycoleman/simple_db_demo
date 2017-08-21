@@ -17,30 +17,30 @@ define profile::oradb::generic::database(
   # All standard values fetched in data function
   #
   ora_database{$name:
-    ensure                  => present,
-    init_ora_content        => template("profile/init.ora.${oracle_version}.erb"),
-    oracle_base             => $profile::oradb::base,
-    oracle_home             => $profile::oradb::home,
-    system_password         => $profile::oradb::system_password,
-    sys_password            => $profile::oradb::sys_password,
-    character_set           => 'AL32UTF8',
-    national_character_set  => 'AL16UTF16',
-    extent_management       => 'local',
-    logfile_groups => [
+    ensure                       => present,
+    init_ora_content             => template("profile/init.ora.${oracle_version}.erb"),
+    oracle_base                  => $profile::oradb::base,
+    oracle_home                  => $profile::oradb::home,
+    system_password              => $profile::oradb::system_password,
+    sys_password                 => $profile::oradb::sys_password,
+    character_set                => 'AL32UTF8',
+    national_character_set       => 'AL16UTF16',
+    extent_management            => 'local',
+    logfile_groups               => [
         {group => 10, size => $log_size},
         {group => 10, size => $log_size},
         {group => 20, size => $log_size},
         {group => 20, size => $log_size},
       ],
-    datafiles       => [
+    datafiles                    => [
       {size => $system_tablespace_size, autoextend => {next => '10M', maxsize => 'unlimited'}},
     ],
-    sysaux_datafiles => [
+    sysaux_datafiles             => [
       {size => $sysaux_tablespace_size, autoextend => {next => '10M', maxsize => 'unlimited'}},
     ],
     default_temporary_tablespace => {
-      name      => 'TEMP',
-      tempfile  => {
+      name     => 'TEMP',
+      tempfile => {
         size       => $temporary_tablespace_size,
         autoextend => {
           next    => '5M',
@@ -48,27 +48,27 @@ define profile::oradb::generic::database(
         }
       },
     },
-    undo_tablespace   => {
-      name      => 'UNDOTBS1',
-      datafile  => {
+    undo_tablespace              => {
+      name     => 'UNDOTBS1',
+      datafile => {
         size       => $undo_tablespace_size,
         autoextend => {next => '5M', maxsize => 'unlimited'}      }
     },
-    default_tablespace => {
-      name      => 'USERS',
-      datafile  => {
+    default_tablespace           => {
+      name              => 'USERS',
+      datafile          => {
         size       => $user_tablespace_size,
         autoextend => {next => '1M', maxsize => 'unlimited'}
       },
       extent_management => {
-        'type'        => 'local',
-        autoallocate  => true,
+        'type'       => 'local',
+        autoallocate => true,
       }
     },
-    timezone       => '+01:00',
-  } ->
+    timezone                     => '+01:00',
+  }
 
-  ora_install::dbactions{ "start_${name}":
+  -> ora_install::dbactions{ "start_${name}":
     oracle_home => $profile::oradb::home,
     db_name     => $name,
   }
@@ -77,5 +77,4 @@ define profile::oradb::generic::database(
     oracle_home => $profile::oradb::home,
     db_name     => $name,
   }
-
 }

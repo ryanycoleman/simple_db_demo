@@ -1,20 +1,24 @@
 #
-# Install librarian puppet. We need this to download the correct set of puppet modules
+# Install R10K. We need this to download the correct set of puppet modules
 #
 echo 'Installing required gems'
-/opt/puppetlabs/puppet/bin/gem install activesupport:4.2.7.1 librarian-puppet awesome_print --no-rdoc --no-ri
-yum install git -y
+/opt/puppetlabs/puppet/bin/gem install r10k --no-rdoc --no-ri > /dev/null # 2>&1
 
 echo 'Installing required puppet modules'
 cd /vagrant
-/opt/puppetlabs/puppet/bin/librarian-puppet install
+#
+# Copy netrc file if it exists
+#
+if [ -e /vagrant/.netrc ]
+then
+  cp /vagrant/.netrc ~
+fi
+/opt/puppetlabs/puppet/bin/r10k puppetfile install > /dev/null # 2>&1
 
 #
 # Setup hiera search and backend. We need this to config our systems
 #
 echo 'Setting up hiera directories'
-ln -sf /vagrant/hiera.yaml /etc/puppetlabs/code/hiera.yaml
-
 dirname=/etc/puppetlabs/code/environments/production/hieradata
 if [ -d $dirname ]; then
   rm -rf $dirname
@@ -22,6 +26,7 @@ else
   rm -f $dirname
 fi
 ln -sf /vagrant/hieradata /etc/puppetlabs/code/environments/production
+ln -sf /vagrant/hiera.yaml /etc/puppetlabs/code/environments/production
 
 #
 # Configure the puppet path's
