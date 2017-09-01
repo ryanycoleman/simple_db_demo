@@ -26,14 +26,13 @@ class profile::oradb::software(
 
   file{'/tmp': ensure => 'directory'} ->
 
-  ora_install::installdb{$file_name:
+  ora_install::installdb{ $file_name:
     version                   => $version,
     file                      => $file_name,
     database_type             => $type,
     oracle_base               => $profile::oradb::base,
     oracle_home               => $profile::oradb::home,
     puppet_download_mnt_point => $profile::source_dir,
-    remote_file               => true,
   } ->
 
   ora_install::net{ 'config net8':
