@@ -12,12 +12,15 @@ end
 def link_software
   # Read YAML file with box details
   software_file = File.expand_path('~/.software.yaml')
-  return unless File.exist?(software_file)
-  software_definition = YAML.load_file(software_file)
-  software_locations = software_definition.fetch('software_locations') do
-    raise "#{software_file} should contain key 'software_locations'"
+  if File.exist?(software_file)
+    software_definition = YAML.load_file(software_file)
+    software_locations = software_definition.fetch('software_locations') do
+      raise "#{software_file} should contain key 'software_locations'"
+    end
+    raise "software_locations key in #{software_file} sshould contain array" unless software_locations.is_a?(Array)
+  else
+    software_locations = []
   end
-  raise "software_locations key in #{software_file} sshould contain array" unless software_locations.is_a?(Array)
   software_locations.unshift('./software') # Do local stuff first
   software_locations.each { |dir| link_sync(dir, './modules/software/files') }
 end
