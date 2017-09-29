@@ -1,10 +1,11 @@
+# forge in this file will not be used by r10k, so it is defined in r10k.yaml
 forge 'http://forge.enterprisemodules.com'
 
 
 mod 'puppetlabs-stdlib',              '4.18.0'
 mod 'puppetlabs-concat',              '1.2.5'
 mod 'stm-debconf',                    '2.0.0'
-mod 'erwbgy-limits',                  '0.3.1'
+mod 'saz-limits',                     '2.5.0'
 mod 'petems-swap_file',               '1.0.1'
 mod 'fiddyspence-sysctl',             '0.0.5'
 mod 'puppet-archive',                 '2.0.0'
@@ -23,7 +24,7 @@ mod 'enterprisemodules-ora_install',
   :git => 'https://github.com/enterprisemodules/ora_install.git',
   :ref => 'master'
 #
-# Modules that are part of the control repo. R10K doesn't need to toch these
+# Modules that are part of the control repo. R10K doesn't need to touch these
 #
 mod 'role',       :local => true
 mod 'profile',    :local => true
