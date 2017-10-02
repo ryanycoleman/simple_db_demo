@@ -1,7 +1,7 @@
 # Demo Puppet implementation
 
 This repo contains a demonstration of a simple database installation. It contains no patches and hardly any setup inside of the database (e.g. tablespaces, users, synomyms). It's purpose is to help you guide through an initial installation of an Oracle node with Puppet.
-The name of the node indicates which version of Oracle will be installed in it i.e. db112 has version 11.2.
+The name of the node indicates which version of Oracle will be installed in it i.e. db112 has version 11.2. This demo is ready for Puppet 4 and for Puppet 5.
 
 ## Starting the nodes masterless
 
@@ -32,15 +32,16 @@ You must always use the specified order:
 The software must be placed in `modules/software/files`. It must contain the next files:
 
 ### Puppet Enterprise
-- puppet-enterprise-2016.5.1-el-7-x86_64.tar.gz (Extracted tar)
-
+- puppet-enterprise-2017.2.3-el-7-x86_64-x86_64.tar.gz (Extracted tar)
 
 ### Oracle Database version 11.2.0.4
 - p13390677_112040_Linux-x86-64_1of7.zip
 - p13390677_112040_Linux-x86-64_2of7.zip
+
 ### Oracle Database version 12.1.0.2
 - linuxamd64_12102_database_1of2.zip
 - linuxamd64_12102_database_2of2.zip
+
 ### Oracle Database version 12.2.0.1
 - linuxx64_12201_database.zip
 
