@@ -20,9 +20,7 @@ mod 'saz-timezone',
 #
 mod 'enterprisemodules-ora_config',   '2.3.10'
 mod 'enterprisemodules-easy_type',    '2.3.1'
-mod 'enterprisemodules-ora_install',
-  :git => 'https://github.com/enterprisemodules/ora_install.git',
-  :ref => 'master'
+mod 'enterprisemodules-ora_install',  '3.0.1'
 #
 # Modules that are part of the control repo. R10K doesn't need to touch these
 #
