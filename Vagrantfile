@@ -2,6 +2,7 @@
 # rubocop: disable Metrics/BlockLength
 require 'yaml'
 
+
 unless Vagrant.has_plugin?("vagrant-triggers")
   raise 'vagrant-triggers is not installed, please run: vagrant plugin install vagrant-triggers'
 end
@@ -44,12 +45,12 @@ VAGRANTFILE_API_VERSION = '2'.freeze
 
 # Read YAML file with box details
 servers = YAML.load_file('servers.yaml')
-pe_puppet_user_id  = 495
-pe_puppet_group_id = 496
+pe_puppet_user_id  = 995
+pe_puppet_group_id = 993
 #
 # Choose your version of Puppet Enterprise
 #
-puppet_installer   = 'puppet-enterprise-2017.2.3-el-7-x86_64/puppet-enterprise-installer'
+puppet_installer   = 'puppet-enterprise-2017.3.4-el-7-x86_64/puppet-enterprise-installer'
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   link_software
@@ -73,7 +74,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           run_remote <<-EOD
 cat > /etc/hosts<< "EOF"
 127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4
-192.168.253.10 dbmaster.example.com puppet dbmaster
+192.168.253.10 master.example.com puppet master
 #{server['public_ip']} #{hostname}.example.com #{hostname}
 EOF
 EOD
@@ -123,11 +124,11 @@ EOD
           run_remote <<-EOD
 cat > /etc/hosts<< "EOF"
 127.0.0.1 localhost.localdomain localhost4 localhost4.localdomain4
-192.168.253.10 dbmaster.example.com puppet dbmaster
+192.168.253.10 master.example.com puppet master
 #{server['public_ip']} #{hostname}.example.com #{hostname}
 EOF
 EOD
-          run_remote 'curl -k https://dbmaster.example.com:8140/packages/current/install.bash | sudo bash'
+          run_remote 'curl -k https://master.example.com:8140/packages/current/install.bash | sudo bash'
           #
           # The agent installation also automatically start's it. In production, this is what you want. For now we
           # want the first run to be interactive, so we see the output. Therefore, we stop the agent and wait

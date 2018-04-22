@@ -56,3 +56,9 @@
 /modules/software/files/SAM
 /modules/software/files/puppet-enterprise-2016.2.1-el-7-x86_64
 /modules/software/files/Oracle VM
+/modules/echo
+/modules/ora_profile
+/modules/software/files/puppet-enterprise-2017.3.4-el-7-x86_64
+/modules/software
+/modules/augeasproviders_core
+/modules/augeasproviders_sysctl

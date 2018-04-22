@@ -1,13 +1,9 @@
 # Docs
 class role::oradb::simple_db()
 {
-  contain profile::base
-  contain profile::oradb::os
-  contain profile::oradb::software
-  contain profile::oradb::database::db01
 
-  Class['profile::base::hosts']
-  -> Class['profile::oradb::os']
-  -> Class['profile::oradb::software']
-  -> Class['profile::oradb::database::db01']
+  contain ::profile::base
+  contain ::ora_profile::database
+
+  Class['::profile::base'] -> Class['::ora_profile::database']
 }

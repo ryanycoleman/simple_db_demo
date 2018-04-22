@@ -2,25 +2,23 @@
 forge 'http://forge.enterprisemodules.com'
 
 
-mod 'puppetlabs-stdlib',              '4.18.0'
-mod 'puppetlabs-concat',              '1.2.5'
-mod 'stm-debconf',                    '2.0.0'
-mod 'saz-limits',                     '2.5.0'
-mod 'petems-swap_file',               '1.0.1'
-mod 'fiddyspence-sysctl',             '0.0.5'
-mod 'puppet-archive',                 '2.0.0'
-#
-# Here are some of the modules that are not yet released
-#
-mod 'saz-timezone',
-  :git => 'https://github.com/saz/puppet-timezone.git',
-  :ref => '62ba3ccadf13ee8dbd786b7ade29096fc3ab40b6'
+mod 'puppetlabs-stdlib',                    '4.25.1'
+mod 'puppetlabs-concat',                    '4.2.1'
+mod 'stm-debconf',                          '2.0.0'
+mod 'saz-limits',                           '3.0.2'
+mod 'petems-swap_file',                     '1.0.1'
+mod 'herculesteam-augeasproviders_sysctl',  '2.2.0'
+mod 'puppet-archive',                       '2.0.0'
+mod 'saz-timezone',                         '4.1.1'
+mod 'ipcrm-echo',                           '0.1.5'
+mod 'herculesteam-augeasproviders_core',    '2.1.4'
 #
 # The Enterprise Modules Oracle specific Modules
 #
-mod 'enterprisemodules-ora_config',   '2.3.10'
-mod 'enterprisemodules-easy_type',    '2.3.1'
-mod 'enterprisemodules-ora_install',  '3.0.1'
+mod 'enterprisemodules-ora_config',   '2.5.2'
+mod 'enterprisemodules-easy_type',    '2.4.2'
+mod 'enterprisemodules-ora_install',  '3.0.10'
+mod 'enterprisemodules-ora_profile'   '0.1.0'
 #
 # Modules that are part of the control repo. R10K doesn't need to touch these
 #
