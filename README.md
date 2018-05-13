@@ -33,7 +33,7 @@ You must always use the specified order:
 The software must be placed in `modules/software/files`. It must contain the next files:
 
 ### Puppet Enterprise (Not needed when using masterless deployments)
-- [puppet-enterprise-2018.1.0-el-7-x86_6.tar.gz (Extracted tar)](https://puppet.com/download-puppet-enterprise)
+- [puppet-enterprise-2017.3.5-el-7-x86_64.tar.gz (Extracted tar)](https://puppet.com/download-puppet-enterprise)
 
 ### Oracle Database version 12.2.0.1
 - linuxx64_12201_database.zip
