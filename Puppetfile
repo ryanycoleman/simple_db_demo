@@ -7,18 +7,22 @@ mod 'puppetlabs-concat',                    '4.2.1'
 mod 'stm-debconf',                          '2.0.0'
 mod 'saz-limits',                           '3.0.2'
 mod 'petems-swap_file',                     '1.0.1'
-mod 'herculesteam-augeasproviders_sysctl',  '2.2.0'
 mod 'puppet-archive',                       '2.0.0'
 mod 'saz-timezone',                         '4.1.1'
 mod 'ipcrm-echo',                           '0.1.5'
 mod 'herculesteam-augeasproviders_core',    '2.1.4'
+mod 'herculesteam-augeasproviders_sysctl',  '2.2.0'
+mod 'puppetlabs-firewall'
+mod 'crayfishx-firewalld'
+
 #
 # The Enterprise Modules Oracle specific Modules
 #
-mod 'enterprisemodules-ora_config',   '2.5.2'
+mod 'enterprisemodules-ora_config',   '2.6.3'
 mod 'enterprisemodules-easy_type',    '2.4.2'
-mod 'enterprisemodules-ora_install',  '3.0.10'
-mod 'enterprisemodules-ora_profile'   '0.1.0'
+mod 'enterprisemodules-ora_install',  '3.0.14'
+mod 'enterprisemodules-ora_profile',  '0.2.0'
+mod 'enterprisemodules-ora_cis',      '1.0.6'
 #
 # Modules that are part of the control repo. R10K doesn't need to touch these
 #

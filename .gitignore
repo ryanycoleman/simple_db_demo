@@ -62,3 +62,5 @@
 /modules/software
 /modules/augeasproviders_core
 /modules/augeasproviders_sysctl
+/modules/firewall
+/modules/firewalld
