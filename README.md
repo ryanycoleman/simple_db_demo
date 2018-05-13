@@ -1,6 +1,7 @@
 # Demo Puppet implementation
 
-This repo contains a demonstration of a simple database installation. It contains no patches and hardly any setup inside of the database (e.g. tablespaces, users, synomyms). It's purpose is to help you guide through an initial installation of an Oracle node with Puppet.
+This repo contains a demonstration of a simple database installation. It uses the [`ora_profile`](https://forge.puppet.com/enterprisemodules/ora_profile) module to get a quick and easy start.
+
 The name of the node indicates which version of Oracle will be installed in it i.e. db112 has version 11.2. This demo is ready for Puppet 4 and for Puppet 5.
 
 ## Starting the nodes masterless
@@ -31,21 +32,23 @@ You must always use the specified order:
 
 The software must be placed in `modules/software/files`. It must contain the next files:
 
-### Puppet Enterprise
-- puppet-enterprise-2017.2.3-el-7-x86_64-x86_64.tar.gz (Extracted tar)
+### Puppet Enterprise (Not needed when using masterless deployments)
+- [puppet-enterprise-2018.1.0-el-7-x86_6.tar.gz (Extracted tar)](https://puppet.com/download-puppet-enterprise)
 
-### Oracle Database version 11.2.0.4
-- p13390677_112040_Linux-x86-64_1of7.zip
-- p13390677_112040_Linux-x86-64_2of7.zip
+### Oracle Database version 12.2.0.1
+- linuxx64_12201_database.zip
+- p6880880_121010_Linux-x86-64.zip (Opatch version)
+- p27468969_122010_Linux-x86-64.zip
 
 ### Oracle Database version 12.1.0.2
 - linuxamd64_12102_database_1of2.zip
 - linuxamd64_12102_database_2of2.zip
 
-### Oracle Database version 12.2.0.1
-- linuxx64_12201_database.zip
+### Oracle Database version 11.2.0.4
+- p13390677_112040_Linux-x86-64_1of7.zip
+- p13390677_112040_Linux-x86-64_2of7.zip
 
-You can download this file from
+You can download these file from
 [here](http://support.oracle.com)
 or
 [here](http://www.oracle.com/technetwork/database/enterprise-edition/downloads/oracle12c-linux-12201-3608234.html)
