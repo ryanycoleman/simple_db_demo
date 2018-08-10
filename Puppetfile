@@ -18,10 +18,10 @@ mod 'crayfishx-firewalld'
 #
 # The Enterprise Modules Oracle specific Modules
 #
-mod 'enterprisemodules-ora_config',   '2.7.1'
+mod 'enterprisemodules-ora_config',   '2.8.0'
 mod 'enterprisemodules-easy_type',    '2.5.0'
-mod 'enterprisemodules-ora_install',  '3.0.14'
-mod 'enterprisemodules-ora_profile',  '0.6.2'
+mod 'enterprisemodules-ora_install',  '3.1.0'
+mod 'enterprisemodules-ora_profile',  '0.7.1'
 mod 'enterprisemodules-ora_cis',      '1.0.11'
 #
 # Modules that are part of the control repo. R10K doesn't need to touch these
