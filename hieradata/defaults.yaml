@@ -1,3 +1,28 @@
-ora_profile::database::source:                                   puppet:///modules/software
-ora_profile::database::db_definition::system_password:           Welcome01
-ora_profile::database::db_definition::sys_password:              Change_on_1nstall
+---
+#------------------------------------------------------------------------------
+#
+# Set lookup merge behaviour
+#
+#------------------------------------------------------------------------------
+lookup_options:
+  "^ora_profile::database::(.*)::(.*)":
+    merge:
+      strategy: deep
+      merge_hash_arrays: true
+
+
+# ------------------------------------------------------------------------------
+#
+#  Settings for database
+#
+# ------------------------------------------------------------------------------
+ora_profile::database::source:                                            puppet:///modules/software
+
+
+# ------------------------------------------------------------------------------
+#
+#  Settings for database::db_definition
+#
+# ------------------------------------------------------------------------------
+ora_profile::database::db_definition::system_password:                    Welcome01
+ora_profile::database::db_definition::sys_password:                       Change_on_1nstall
