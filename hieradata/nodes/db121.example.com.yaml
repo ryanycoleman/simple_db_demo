@@ -1,10 +1,38 @@
+---
 deployment_zone: vagrant
 
 role: role::oradb::simple_db
 
-ora_profile::database::dbname:                            DB121
-ora_profile::database::version:                           12.1.0.2
-ora_profile::database::db_software::database_type:        EE
-ora_profile::database::db_software::file_name:            linuxamd64_12102_database
-ora_profile::database::db_definition::init_ora_template:  profile/init.ora.12.1.0.2.erb
-ora_profile::database::db_patches:                        skip
+# ------------------------------------------------------------------------------
+#
+#  Class overrides and additions
+#
+# ------------------------------------------------------------------------------
+ora_profile::database::db_patches:                                        skip
+
+
+# ------------------------------------------------------------------------------
+#
+#  Settings for database
+#
+# ------------------------------------------------------------------------------
+ora_profile::database::dbname:                                            DB121
+ora_profile::database::version:                                           12.1.0.2
+ora_profile::database::oracle_home:                                       /u01/app/oracle/product/12.1.0.2/db_home1
+
+
+# ------------------------------------------------------------------------------
+#
+#  Settings for database::db_software
+#
+# ------------------------------------------------------------------------------
+ora_profile::database::db_software::database_type:                        EE
+ora_profile::database::db_software::file_name:                            linuxamd64_12102_database
+
+
+# ------------------------------------------------------------------------------
+#
+#  Settings for database::db_definition
+#
+# ------------------------------------------------------------------------------
+ora_profile::database::db_definition::init_ora_template:                  profile/init.ora.12.1.0.2.erb

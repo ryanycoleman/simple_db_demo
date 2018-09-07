@@ -1,7 +1,7 @@
+---
 deployment_zone: vagrant
 
 role: role::oradb::simple_db
 
 ora_profile::database::dbname:                            DB122
-ora_profile::database::version:                           12.2.0.1
-ora_profile::database::db_software::file_name:            linuxx64_12201_database
+ora_profile::database::db_patches:                        skip

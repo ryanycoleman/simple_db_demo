@@ -1,4 +1,1 @@
-class role::puppet_master()
-{
-  
-}
+class role::puppet_master(){}
