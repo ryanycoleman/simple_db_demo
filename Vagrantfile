@@ -145,7 +145,7 @@ EOD
           srv.vm.provision :shell, path: 'vm-scripts/install_puppet.sh'
           srv.vm.provision :shell, path: 'vm-scripts/setup_puppet.sh'
         end
-        srv.vm.provision :shell, inline: 'puppet apply /etc/puppetlabs/code/environments/production/manifests/site.pp --test'
+        srv.vm.provision :shell, inline: 'puppet apply /etc/puppetlabs/code/environments/production/manifests/site.pp --test || true'
       when 'pe-master'
         srv.vm.box = 'enterprisemodules/centos-7.3-x86_64-nocm' unless server['box']
         srv.vm.synced_folder '.', '/vagrant', owner: pe_puppet_user_id, group: pe_puppet_group_id
