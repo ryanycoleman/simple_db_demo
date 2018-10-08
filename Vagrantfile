@@ -1,32 +1,7 @@
 # rubocop: disable Metrics/LineLength
 # rubocop: disable Metrics/BlockLength
 require 'yaml'
-
-VAGRANTFILE_API_VERSION = '2'.freeze
-
-unless Vagrant.has_plugin?('vagrant-triggers')
-  raise 'vagrant-triggers is not installed, please run: vagrant plugin install vagrant-triggers'
-end
-
-add_timestamp = false
-if add_timestamp
-  def $stdout.write(string)
-    log_datas = string
-    if log_datas.gsub(/\r?\n/, '') != ''
-      log_datas = ::Time.now.strftime('%d-%m-%Y %T') + ' ' + log_datas.gsub(/\r\n/, '\n')
-    end
-    super log_datas
-  end
-
-  def $stderr.write(string)
-    log_datas = string
-    if log_datas.gsub(/\r?\n/, '') != ''
-      log_datas = ::Time.now.strftime('%d-%m-%Y %T') + ' ' + log_datas.gsub(/\r\n/, '\n')
-    end
-    super log_datas
-  end
-end
-
+VAGRANTFILE_API_VERSION = 2
 #
 # This routine will read a ~/.software.yaml fileand make links to all the software defined.
 #
@@ -38,12 +13,11 @@ def link_software
     software_locations = software_definition.fetch('software_locations') do
       raise "#{software_file} should contain key 'software_locations'"
     end
-    raise "software_locations key in #{software_file} should contain array" unless software_locations.is_a?(Array)
+    raise "software_locations key in #{software_file} sshould contain array" unless software_locations.is_a?(Array)
   else
     software_locations = []
   end
   software_locations.unshift('./software') # Do local stuff first
-  FileUtils.mkdir_p('./modules/software/files') unless File.exist?('./modules/software/files')
   software_locations.each { |dir| link_sync(dir, './modules/software/files') }
 end
 
@@ -55,6 +29,7 @@ def link_sync(dir, target)
       link_sync(file, "#{target}/#{file_name}")
       next
     end
+    FileUtils.mkdir_p(target) unless File.directory?(target)
     full_target = "#{target}/#{file_name}"
     next if File.exist?(full_target)
     puts "Linking file #{file} to #{full_target}..."
@@ -64,88 +39,70 @@ end
 
 # Read YAML file with box details
 servers = YAML.load_file('servers.yaml')
-pe_puppet_user_id  = 495
-pe_puppet_group_id = 496
-vagrant_root = File.dirname(__FILE__)
-home = ENV['HOME']
+pe_puppet_user_id  = 995
+pe_puppet_group_id = 993
 #
 # Choose your version of Puppet Enterprise
 #
-# puppet_installer = 'puppet-enterprise-2015.3.0-el-6-x86_64/puppet-enterprise-installer'
-# puppet_installer = 'puppet-enterprise-2015.2.2-el-6-x86_64/puppet-enterprise-installer'
-# puppet_installer = 'puppet-enterprise-2016.1.2-el-7-x86_64/puppet-enterprise-installer'
-# puppet_installer = 'puppet-enterprise-2016.4.0-el-7-x86_64/puppet-enterprise-installer'
-# puppet_installer = 'puppet-enterprise-2016.5.1-el-7-x86_64/puppet-enterprise-installer'
-# puppet_installer = 'puppet-enterprise-2017.3.5-el-7-x86_64/puppet-enterprise-installer'
-# puppet_installer = 'puppet-enterprise-2018.1.1-el-7-x86_64/puppet-enterprise-installer'
-puppet_installer = 'puppet-enterprise-2018.1.3-el-7-x86_64/puppet-enterprise-installer'
+puppet_installer   = 'puppet-enterprise-2018.1.3-el-7-x86_64/puppet-enterprise-installer'
 
-Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+Vagrant.configure('2') do |config|
   link_software
 
   config.ssh.insert_key = false
   servers.each do |name, server|
     config.vm.define name do |srv|
+      srv.vm.communicator = server['protocol'] || 'ssh'
       srv.vm.box = ENV['BASE_IMAGE'] ? (ENV['BASE_IMAGE']).to_s : server['box']
       hostname = name.split('-').last # First part contains type of node
-      srv.vm.hostname = "#{hostname}.example.com"
-      srv.vm.network 'private_network', ip: server['public_ip']
-      srv.vm.network 'private_network', ip: server['private_ip'], virtualbox__intnet: true
+      if srv.vm.communicator == 'ssh'
+        srv.vm.hostname = "#{hostname}.example.com"
+        srv.vm.network 'private_network', ip: server['public_ip']
+        # srv.vm.network 'private_network', ip: server['private_ip'], virtualbox__intnet: true
+      else
+        srv.vm.hostname = "#{hostname}"
+        srv.vm.network 'private_network', ip: server['public_ip']
+        config.winrm.ssl_peer_verification = false
+        config.winrm.retry_delay = 60
+        config.winrm.retry_limit = 10
+        end
       srv.vm.synced_folder '.', '/vagrant', type: :virtualbox
-
-      config.trigger.before :up do
-        if File.file?("#{home}/.netrc") && !File.file?("#{vagrant_root}/.netrc")
-          info "Copy #{home}/.netrc to #{vagrant_root}/.netrc"
-          FileUtils.copy_file("#{home}/.netrc", "#{vagrant_root}/.netrc")
-        end
-      end
-      config.trigger.after :up do
-        unless File.file?(".#{hostname}.txt")
-          info "Creating file .#{hostname}.txt"
-          File.open(".#{hostname}.txt", 'w') { |f| f.write(hostname) }
-          if server['needs_storage'] == 'enabled'
-            server['disks'].each do |disk|
-              disk_name = disk.first
-              disk_uuid = disk.last['uuid']
-              if !File.file?(".#{disk_name}.txt") && File.file?("#{disk_name}.vdi")
-                info "Creating file .#{disk_name}.txt"
-                File.open(".#{disk_name}.txt", 'w') { |f| f.write("00000000-0000-0000-0000-0000000000#{disk_uuid}") }
-              end
-            end
-          end
-        end
-      end
-      config.trigger.after :destroy do
-        if File.file?(".#{hostname}.txt")
-          info "Removing file .#{hostname}.txt"
-          run "rm .#{hostname}.txt"
-          if server['needs_storage'] == 'enabled'
-            server['disks'].each do |disk|
-              disk_name = disk.first
-              if File.file?(".#{disk_name}.txt")
-                info "Removing file .#{disk_name}.txt"
-                run "rm .#{disk_name}.txt"
-              end
-            end
-          end
-        end
-      end
-
       case server['type']
       when 'masterless'
         srv.vm.box = 'enterprisemodules/centos-7.3-x86_64-nocm' unless server['box']
-        unless File.file?(".#{hostname}.txt")
-          srv.vm.provision :shell, inline: <<-EOD
-cat > /etc/hosts<< "EOF"
-127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4
-192.168.253.10 dbmaster.example.com puppet master
-#{server['public_ip']} #{hostname}.example.com #{hostname}
-EOF
-EOD
-          srv.vm.provision :shell, path: 'vm-scripts/install_puppet.sh'
-          srv.vm.provision :shell, path: 'vm-scripts/setup_puppet.sh'
+        config.trigger.after :up do |trigger|
+          #
+          # Fix hostnames because Vagrant mixes it up.
+          #
+          if srv.vm.communicator == 'ssh'
+            trigger.run_remote = {inline: <<~EOD}
+              cat > /etc/hosts<< "EOF"
+              127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4
+              192.168.253.10 master.example.com puppet master
+              #{server['public_ip']} #{hostname}.example.com #{hostname}
+              EOF
+              bash /vagrant/vm-scripts/install_puppet.sh
+              bash /vagrant/vm-scripts/setup_puppet.sh
+              /opt/puppetlabs/puppet/bin/puppet apply /etc/puppetlabs/code/environments/production/manifests/site.pp || true
+            EOD
+          else
+            trigger.run_remote = {inline: <<~EOD}
+              cd c:\\vagrant\\vm-scripts
+              .\\install_puppet.ps1
+              cd c:\\vagrant\\vm-scripts
+              .\\setup_puppet.ps1
+              iex "& 'C:\\Program Files\\Puppet Labs\\Puppet\\bin\\puppet' resource service puppet ensure=stopped"
+              iex "& 'C:\\Program Files\\Puppet Labs\\Puppet\\bin\\puppet' resource service puppet ensure=stopped"
+              iex "& 'C:\\Program Files\\Puppet Labs\\Puppet\\bin\\puppet' apply c:\\vagrant\\manifests\\site.pp -t"
+            EOD
+          end
         end
-        srv.vm.provision :shell, inline: 'puppet apply /etc/puppetlabs/code/environments/production/manifests/site.pp --test || true'
+        config.trigger.after :provision do |trigger|
+          if srv.vm.communicator == 'ssh'
+            trigger.run_remote = {inline: "puppet apply /etc/puppetlabs/code/environments/production/manifests/site.pp || true"}
+          end
+        end
+
       when 'pe-master'
         srv.vm.box = 'enterprisemodules/centos-7.3-x86_64-nocm' unless server['box']
         srv.vm.synced_folder '.', '/vagrant', owner: pe_puppet_user_id, group: pe_puppet_group_id
@@ -155,6 +112,8 @@ EOD
         # you'dd want to explicitly confirm every node.
         #
         srv.vm.provision :shell, inline: "echo '*.example.com' > /etc/puppetlabs/puppet/autosign.conf"
+        srv.vm.provision :shell, inline: "echo '*.local' >> /etc/puppetlabs/puppet/autosign.conf"
+        srv.vm.provision :shell, inline: "echo '*.home' >> /etc/puppetlabs/puppet/autosign.conf"
         #
         # For now we stop the firewall. In the future we will add a nice puppet setup to the ports needed
         # for Puppet Enterprise to work correctly.
@@ -170,31 +129,49 @@ EOD
         # Make sure all plugins are synced to the puppetserver before exiting and stating
         # any agents
         #
-        srv.vm.provision :shell, inline: 'systemctl restart pe-puppetserver.service'
+        srv.vm.provision :shell, inline: 'service pe-puppetserver restart'
         srv.vm.provision :shell, inline: 'puppet agent -t || true'
       when 'pe-agent'
         srv.vm.box = 'enterprisemodules/centos-7.3-x86_64-nocm' unless server['box']
         #
         # First we need to instal the agent.
         #
-        unless File.file?(".#{hostname}.txt")
-          srv.vm.provision :shell, inline: 'curl -k https://asmmaster.example.com:8140/packages/current/install.bash | sudo bash'
+        config.trigger.after :up do |trigger|
+          #
+          # Fix hostnames because Vagrant mixes it up.
+          #
+          if srv.vm.communicator == 'ssh'
+            trigger.run_remote = {inline: <<~EOD}
+              cat > /etc/hosts<< "EOF"
+              127.0.0.1 localhost.localdomain localhost4 localhost4.localdomain4
+              192.168.253.10 master.example.com puppet master
+              #{server['public_ip']} #{hostname}.example.com #{hostname}
+              EOF
+              curl -k https://master.example.com:8140/packages/current/install.bash | sudo bash
+              #
+              # The agent installation also automatically start's it. In production, this is what you want. For now we
+              # want the first run to be interactive, so we see the output. Therefore, we stop the agent and wait
+              # for it to be stopped before we start the interactive run
+              #
+              pkill -9 -f "puppet.*agent.*"
+              /opt/puppetlabs/puppet/bin/puppet agent -t; exit 0
+              #
+              # After the interactive run is done, we restart the agent in a normal way.
+              #
+              systemctl start puppet
+              EOD
+            else
+              trigger.run_remote = {inline: <<~EOD}
+              Copy-Item -Path c:\\vagrant\\vm-scripts\\windows-hosts -Destination c:\\Windows\\System32\\Drivers\\etc\\hosts
+              [Net.ServicePointManager]::ServerCertificateValidationCallback = {$true}; $webClient = New-Object System.Net.WebClient; $webClient.DownloadFile('https://master.example.com:8140/packages/current/install.ps1', 'install.ps1');.\\install.ps1
+              iex 'puppet resource service puppet ensure=stopped'
+              iex 'puppet agent -t'
+              EOD
+          end
         end
-        #
-        # The agent installation also automatically start's it. In production, this is what you want. For now we
-        # want the first run to be interactive, so we see the output. Therefore, we stop the agent and wait
-        # for it to be stopped before we start the interactive run
-        #
-        srv.vm.provision :shell, inline: 'pkill -9 -f "puppet.*agent.*"'
-        srv.vm.provision :shell, inline: 'puppet agent -t; exit 0'
-        #
-        # After the interactive run is done, we restart the agent in a normal way.
-        #
-        srv.vm.provision :shell, inline: 'systemctl start puppet'
       end
-
       config.vm.provider :virtualbox do |vb|
-        vb.gui = false
+        # vb.gui = true
         vb.cpus = server['cpucount'] || 1
         vb.memory = server['ram'] || 4096
         vb.customize ['modifyvm', :id, '--ioapic', 'on']
@@ -207,59 +184,6 @@ EOD
           vb.customize ['setextradata', :id, 'VBoxInternal/CPUM/HostCPUID/Cache/ecx', '0']
           vb.customize ['setextradata', :id, 'VBoxInternal/CPUM/HostCPUID/Cache/edx', '0']
           vb.customize ['setextradata', :id, 'VBoxInternal/CPUM/HostCPUID/Cache/SubLeafMask', '0xffffffff']
-        end
-        if server['needs_storage'] == 'enabled'
-          disks = server['disks'] || {}
-          unless File.file?(".#{hostname}.txt")
-            vb.customize [
-              'storagectl', :id,
-              '--name', 'SATA Controller',
-              '--add', 'sata',
-              '--portcount', disks.size
-            ]
-          end
-          disks.each_with_index do |disk, i|
-            disk_name = disk.first
-            disk_size = disk.last['size']
-            disk_uuid = disk.last['uuid']
-            if File.file?("#{disk_name}.vdi")
-              if File.file?(".#{disk_name}.txt")
-                file = File.open(".#{disk_name}.txt", 'r')
-                current_uuid = file.read
-                file.close
-              else
-                current_uuid = '0'
-              end
-            else
-              vb.customize [
-                'createhd',
-                '--filename', "#{disk_name}.vdi",
-                '--size', disk_size.to_s,
-                '--variant', 'Standard'
-              ]
-              current_uuid = '0'
-            end
-            if current_uuid.include? disk_uuid
-              vb.customize [
-                'storageattach', :id,
-                '--storagectl', 'SATA Controller',
-                '--port', (i + 1).to_s,
-                '--device', 0,
-                '--type', 'hdd',
-                '--medium', "#{disk_name}.vdi"
-              ]
-            else
-              vb.customize [
-                'storageattach', :id,
-                '--storagectl', 'SATA Controller',
-                '--port', (i + 1).to_s,
-                '--device', 0,
-                '--type', 'hdd',
-                '--medium', "#{disk_name}.vdi",
-                '--setuuid', "00000000-0000-0000-0000-00000000000#{disk_uuid}"
-              ]
-            end
-          end
         end
       end
     end

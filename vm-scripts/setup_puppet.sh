@@ -26,7 +26,6 @@ else
   rm -f $dirname
 fi
 ln -sf /vagrant/hieradata /etc/puppetlabs/code/environments/production
-rm -f /etc/puppetlabs/code/environments/production/hiera.yaml
 ln -sf /vagrant/hiera.yaml /etc/puppetlabs/code/environments/production
 
 #
