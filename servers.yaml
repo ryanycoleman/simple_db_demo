@@ -27,11 +27,12 @@ ml-db180:
   virtualboxorafix: enable
   box:              enterprisemodules/ol-7.3-x86_64-nocm
 ml-windb180:
-  public_ip: '192.168.253.181'
-  protocol:  winrm
-  box:       peru/windows-server-2016-standard-x64-eval
-  cpucount: 2
-  type:     masterless
+  public_ip:        '192.168.253.181'
+  protocol:         winrm
+  box:              peru/windows-server-2016-standard-x64-eval
+  cpucount:         4
+  ram:              8192
+  type:             masterless
 pe-db112:
   public_ip:        '192.168.253.112'
   cpucount:         1

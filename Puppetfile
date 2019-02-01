@@ -16,13 +16,24 @@ mod 'puppetlabs-firewall'
 mod 'crayfishx-firewalld'
 
 #
-# The Enterprise Modules Oracle specific Modules
+# Needed for Windows support
+mod 'puppetlabs-chocolatey',                '3.1.1'
+mod 'puppetlabs-powershell',                '2.2.0'
+mod 'puppetlabs-registry',                  '2.1.0'
+mod 'puppetlabs-acl',                       '2.1.0'
+
 #
-mod 'enterprisemodules-ora_config',         '3.0.0'
-mod 'enterprisemodules-easy_type',          '2.6.0'
-mod 'enterprisemodules-ora_install',        '4.0.0'
-mod 'enterprisemodules-ora_profile',        '0.8.0'
-mod 'enterprisemodules-ora_cis',            '2.0.0'
+# The Enterprise Modules Oracle specific Modules
+
+# mod 'enterprisemodules-ora_config',         '3.0.0'
+mod 'enterprisemodules-easy_type',          '2.9.2'
+# mod 'enterprisemodules-ora_install',        '4.0.0'
+# mod 'enterprisemodules-ora_profile',        '0.8.0'
+# mod 'enterprisemodules-ora_cis',            '2.0.0'
+
+mod 'enterprisemodules-ora_config',         :local => true
+mod 'enterprisemodules-ora_install',        :local => true
+mod 'enterprisemodules-ora_profile',        :local => true
 #
 # Modules that are part of the control repo. R10K doesn't need to touch these
 #
