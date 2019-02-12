@@ -59,3 +59,6 @@ You can download these file from
 [here](http://support.oracle.com)
 or
 [here](http://www.oracle.com/technetwork/database/enterprise-edition/downloads/oracle12c-linux-12201-3608234.html)
+
+### Common issues
+Sometimes virtual machine hangs while ssh connection during executions of vagrant script. The way to fix it is log in to the machine, as root, and run dhclient.
