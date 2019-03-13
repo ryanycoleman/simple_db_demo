@@ -10,6 +10,19 @@ role: role::oradb::simple_db
 ora_profile::database::db_patches:                                        skip
 ora_profile::database::db_startup:                                        skip
 
+# ora_profile::database::groups_and_users::groups:
+#   ORA_INSTALL: {}
+#   ORA_DBA: {}
+#   ORA_OPER: {}
+# ora_profile::database::groups_and_users::users:
+#   "oracle":
+#     groups:
+#     - ORA_INSTALL
+#     - ORA_DBA
+#     - ORA_OPER
+#     - Administrators
+#     comment: This user was created by Puppet
+#     password: 'Vagrant123!'
 
 # ------------------------------------------------------------------------------
 #
@@ -22,7 +35,7 @@ ora_profile::database::oracle_home:                                       "C:\\u
 ora_profile::database::oracle_base:                                       "C:\\u01\\app\\oracle"
 ora_profile::database::download_dir:                                      "C:\\install"
 ora_profile::database::source:                                            "C:\\vagrant\\modules\\software\\files"
-# ora_profile::database::os_user_password:                                  Vagrant123!
+# ora_install::database::os_user_password:                                  'Vagrant123!'
 
 
 # ------------------------------------------------------------------------------

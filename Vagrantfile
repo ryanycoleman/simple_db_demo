@@ -96,9 +96,9 @@ Vagrant.configure('2') do |config|
               .\\install_puppet.ps1
               cd c:\\vagrant\\vm-scripts
               .\\setup_puppet.ps1
-              iex "& 'C:\\Program Files\\Puppet Labs\\Puppet\\bin\\puppet' resource service puppet ensure=stopped"
-              iex "& 'C:\\Program Files\\Puppet Labs\\Puppet\\bin\\puppet' resource service puppet ensure=stopped"
-              iex "& 'C:\\Program Files\\Puppet Labs\\Puppet\\bin\\puppet' apply c:\\vagrant\\manifests\\site.pp -t"
+              iex "& 'C:\\puppetlabs\\bin\\puppet' resource service puppet ensure=stopped"
+              iex "& 'C:\\puppetlabs\\bin\\puppet' resource service puppet ensure=stopped"
+              iex "& 'C:\\puppetlabs\\bin\\puppet' apply c:\\vagrant\\manifests\\site.pp -t"
             EOD
           end
         # end
