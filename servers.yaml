@@ -26,6 +26,12 @@ ml-db180:
   type:             masterless
   virtualboxorafix: enable
   box:              enterprisemodules/ol-7.3-x86_64-nocm
+ml-db193:
+  public_ip:        '192.168.253.190'
+  cpucount:         1
+  type:             masterless
+  virtualboxorafix: enable
+  box:              enterprisemodules/ol-7.3-x86_64-nocm
 pe-db112:
   public_ip:        '192.168.253.112'
   cpucount:         1
@@ -43,6 +49,11 @@ pe-db122:
   virtualboxorafix: enable
 pe-db180:
   public_ip:        '192.168.253.180'
+  cpucount:         1
+  type:             pe-agent
+  virtualboxorafix: enable
+pe-db193:
+  public_ip:        '192.168.253.190'
   cpucount:         1
   type:             pe-agent
   virtualboxorafix: enable
