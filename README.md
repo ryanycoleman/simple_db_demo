@@ -42,10 +42,6 @@ The software must be placed in `modules/software/files`. It must contain the nex
 - LINUX.X64_180000_db_home.zip
 
 ### Oracle Database version 12.2.0.1
-- LINUX.X64_180000_db_home.zip
-- p6880880_121010_Linux-x86-64.zip (Opatch version)
-
-### Oracle Database version 12.2.0.1
 - linuxx64_12201_database.zip
 - p6880880_121010_Linux-x86-64.zip (Opatch version)
 - p27468969_122010_Linux-x86-64.zip

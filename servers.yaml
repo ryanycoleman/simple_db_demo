@@ -1,135 +1,97 @@
 ---
+#
+# The default settings for all nodes
+#
+defaults:
+  domain_name:     example.com
+  cpucount:         1
+  additional_hosts: |
+    127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4
+    192.168.253.10 dbmaster.example.com puppet master
+  box:              enterprisemodules/centos-7.3-x86_64-nocm
+  virtualboxorafix: enable
+#
+# The default settings for all ML nodes
+#
+ml-defaults:
+  type:             masterless
+#
+# The default settings for all PE nodes
+#
+pe-defaults:
+  type:             pe-agent
+  puppet_master:    dbmaster
+
+#
+# The settings for the Puppet Enterprise Server
+#  
 pe-dbmaster:
   public_ip:       '192.168.253.10'
   cpucount:         2
   ram:              3072
   type:             pe-master
-  virtualboxorafix: enable
-  box:              enterprisemodules/centos-7.3-x86_64-nocm
-  additional_hosts: |
-    127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4
-    192.168.253.10 dbmaster.example.com puppet master
+  puppet_installer: puppet-enterprise-2019.1.0-el-7-x86_64/puppet-enterprise-installer
 
-ml-db180:
-  public_ip:        '192.168.253.180'
-  cpucount:         1
-  type:             masterless
-  virtualboxorafix: enable
-  box:              enterprisemodules/centos-7.3-x86_64-nocm
-  puppet_installer: puppet-enterprise-2018.1.3-el-7-x86_64/puppet-enterprise-installer
-  software_files:
-    - LINUX.X64_180000_db_home.zip
-  additional_hosts: |
-    127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4
-    192.168.253.10 dbmaster.example.com puppet master
-
+#
+# All masterless nodes
+#
 ml-db112:
   public_ip:        '192.168.253.112'
-  cpucount:         1
-  type:             masterless
-  virtualboxorafix: enable
-  box:              enterprisemodules/centos-7.3-x86_64-nocm
-  puppet_installer: puppet-enterprise-2018.1.3-el-7-x86_64/puppet-enterprise-installer
   software_files:
     - p13390677_112040_Linux-x86-64_1of7.zip
     - p13390677_112040_Linux-x86-64_2of7.zip
-  additional_hosts: |
-    127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4
-    192.168.253.10 dbmaster.example.com puppet master
 
 ml-db121:
   public_ip:        '192.168.253.121'
-  cpucount:         1
-  type:             masterless
-  virtualboxorafix: enable
-  box:              enterprisemodules/ol-7.3-x86_64-nocm
-  puppet_installer: puppet-enterprise-2018.1.3-el-7-x86_64/puppet-enterprise-installer
   software_files:
     - linuxamd64_12102_database_1of2.zip
     - linuxamd64_12102_database_2of2.zip
-  additional_hosts: |
-    127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4
-    192.168.253.10 dbmaster.example.com puppet master
+
 ml-db122:
   public_ip:        '192.168.253.122'
-  cpucount:         1
-  type:             masterless
-  virtualboxorafix: enable
-  box:              enterprisemodules/centos-7.3-x86_64-nocm
-  puppet_installer: puppet-enterprise-2018.1.3-el-7-x86_64/puppet-enterprise-installer
   software_files:
-    - LINUX.X64_180000_db_home.zip
+    - linuxx64_12201_database.zip
     - p6880880_121010_Linux-x86-64.zip
-  additional_hosts: |
-    127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4
-    192.168.253.10 dbmaster.example.com puppet master
+    - p27468969_122010_Linux-x86-64.zip
+
 ml-db180:
   public_ip:        '192.168.253.180'
-  cpucount:         1
-  type:             masterless
-  virtualboxorafix: enable
-  box:              enterprisemodules/ol-7.3-x86_64-nocm
+  software_files:
+    - LINUX.X64_180000_db_home.zip
+
 ml-db193:
-  public_ip:        '192.168.253.190'
-  cpucount:         1
-  type:             masterless
-  virtualboxorafix: enable
-  box:              enterprisemodules/ol-7.3-x86_64-nocm
+  public_ip:        '192.168.253.193'
+  software_files:
+    - LINUX.X64_193000_db_home.zip
+
+#
+# All Puppet Agent nodes
+#
 pe-db112:
   public_ip:        '192.168.253.112'
-  cpucount:         1
-  type:             pe-agent
-  virtualboxorafix: enable
-  box:              enterprisemodules/centos-7.3-x86_64-nocm
-  puppet_installer: puppet-enterprise-2018.1.3-el-7-x86_64/puppet-enterprise-installer
   software_files:
     - p13390677_112040_Linux-x86-64_1of7.zip
     - p13390677_112040_Linux-x86-64_2of7.zip
-  additional_hosts: |
-    127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4
-    192.168.253.10 dbmaster.example.com puppet master
+
 pe-db121:
   public_ip:        '192.168.253.121'
-  cpucount:         1
-  type:             pe-agent
-  virtualboxorafix: enable
-  box:              enterprisemodules/centos-7.3-x86_64-nocm
-  puppet_installer: puppet-enterprise-2018.1.3-el-7-x86_64/puppet-enterprise-installer
   software_files:
     - linuxamd64_12102_database_1of2.zip
     - linuxamd64_12102_database_2of2.zip
-  additional_hosts: |
-    127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4
-    192.168.253.10 dbmaster.example.com puppet master
 
 pe-db122:
   public_ip:        '192.168.253.122'
-  cpucount:         1
-  type:             pe-agent
-  virtualboxorafix: enable
-  box:              enterprisemodules/centos-7.3-x86_64-nocm
-  puppet_installer: puppet-enterprise-2018.1.3-el-7-x86_64/puppet-enterprise-installer
   software_files:
-    - LINUX.X64_180000_db_home.zip
+    - linuxx64_12201_database.zip
     - p6880880_121010_Linux-x86-64.zip
-  additional_hosts: |
-    127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4
-    192.168.253.10 dbmaster.example.com puppet master
+    - p27468969_122010_Linux-x86-64.zip
 
 pe-db180:
   public_ip:        '192.168.253.180'
-  cpucount:         1
-  type:             pe-agent
-  virtualboxorafix: enable
-  box:              enterprisemodules/centos-7.3-x86_64-nocm
-  puppet_installer: puppet-enterprise-2018.1.3-el-7-x86_64/puppet-enterprise-installer
   software_files:
     - LINUX.X64_180000_db_home.zip
-  additional_hosts: |
-    127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4
-    192.168.253.10 dbmaster.example.com puppet master
+
 pe-db193:
-  public_ip:        '192.168.253.190'
-  cpucount:         1
-  type:             pe-agent
-  virtualboxorafix: enable
+  public_ip:        '192.168.253.193'
+  software_files:
+    - LINUX.X64_193000_db_home.zip
