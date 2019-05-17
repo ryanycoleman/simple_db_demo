@@ -25,24 +25,25 @@ mod 'puppetlabs-acl',                       '2.1.0'
 #
 # The Enterprise Modules Oracle specific Modules
 
-# mod 'enterprisemodules-ora_config',         '3.2.5'
-mod 'enterprisemodules-ora_config',
-    :git => 'git@github.com:remyvb/ora_config.git',
-    :branch => 'windows'
-mod 'enterprisemodules-easy_type',          '2.9.8'
+# mod 'enterprisemodules-ora_config',         '3.6.4'
+mod 'enterprisemodules-ora_install',
+    :git => 'git@github.com:enterprisemodules/ora_install.git',
+    :branch => 'master'
+mod 'enterprisemodules-easy_type',          '2.10.3'
 # mod 'enterprisemodules-ora_install',        '4.1.2'
 mod 'enterprisemodules-ora_install',
-    :git => 'git@github.com:remyvb/ora_install.git',
-    :branch => 'windows'
+    :git => 'git@github.com:enterprisemodules/ora_install.git',
+    :branch => 'master'
 # mod 'enterprisemodules-ora_profile',        '0.8.1'
 mod 'enterprisemodules-ora_profile',
-    :git => 'git@github.com:remyvb/ora_profile.git',
-    :branch => 'windows'
-mod 'enterprisemodules-ora_cis',            '2.0.0'
+    :git => 'git@github.com:enterprisemodules/ora_profile.git',
+    :branch => 'master'
+mod 'enterprisemodules-ora_cis',            '2.1.1'
 
 # mod 'enterprisemodules-ora_config',         :local => true
 # mod 'enterprisemodules-ora_install',        :local => true
 # mod 'enterprisemodules-ora_profile',        :local => true
+
 #
 # Modules that are part of the control repo. R10K doesn't need to touch these
 #
