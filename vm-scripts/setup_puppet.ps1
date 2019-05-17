@@ -2,13 +2,13 @@
 # Install R10K. We need this to download the correct set of puppet modules
 #
 Write-Output "Installing required gems..."
-iex "& 'c:\Program Files\Puppet Labs\Puppet\puppet\bin\gem.bat' install r10k"
+iex "& 'c:\puppetlabs\puppet\bin\gem.bat' install r10k"
 Write-Output "Installing required gems finsihed"
 
 
 Write-Output 'Installing required puppet modules...'
 cd c:\vagrant
-iex "& 'c:\Program Files\Puppet Labs\Puppet\puppet\bin\r10k.bat' puppetfile install"
+iex "& 'c:\puppetlabs\puppet\bin\r10k.bat' puppetfile install"
 Write-Output 'Installing required puppet modules finished.'
 
 #

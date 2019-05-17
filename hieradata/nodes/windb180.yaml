@@ -1,5 +1,5 @@
 ---
-deployment_zone: vagrant
+# deployment_zone: vagrant
 role: role::oradb::simple_db
 
 # ------------------------------------------------------------------------------
@@ -9,6 +9,7 @@ role: role::oradb::simple_db
 # ------------------------------------------------------------------------------
 ora_profile::database::db_patches:                                        skip
 ora_profile::database::db_startup:                                        skip
+ora_profile::database::db_listener:                                       skip
 
 
 # ------------------------------------------------------------------------------
@@ -17,8 +18,11 @@ ora_profile::database::db_startup:                                        skip
 #
 # ------------------------------------------------------------------------------
 ora_profile::database::dbname:                                            DB180
-ora_profile::database::version:                                           18.0.0.0
-ora_profile::database::oracle_home:                                       "c:/u01/app/oracle/product/%{lookup('ora_profile::database::version')}/db_home1"
+ora_profile::database::version:                                           '18.0.0.0'
+ora_profile::database::oracle_home:                                       "C:\\u01\\app\\oracle\\product\\%{lookup('ora_profile::database::version')}\\dbhome_1"
+ora_profile::database::oracle_base:                                       "C:\\u01\\app\\oracle"
+ora_profile::database::source:                                            "C:\\vagrant\\modules\\software\\files"
+
 
 # ------------------------------------------------------------------------------
 #
@@ -27,9 +31,6 @@ ora_profile::database::oracle_home:                                       "c:/u0
 # ------------------------------------------------------------------------------
 ora_profile::database::db_software::database_type:                        EE
 ora_profile::database::db_software::file_name:                            WINDOWS.X64_180000_db_home
-ora_profile::database::db_software::dirs:
-- c:/u01/app/oracle/product
-- "c:/u01/app/oracle/product/%{lookup('ora_profile::database::version')}"
 
 
 # ------------------------------------------------------------------------------
@@ -38,6 +39,8 @@ ora_profile::database::db_software::dirs:
 #
 # ------------------------------------------------------------------------------
 ora_profile::database::db_definition::init_ora_template:                  "profile/init.ora.%{lookup('ora_profile::database::version')}.erb"
+ora_profile::database::db_definition::data_file_destination:              "C:\\u02\\oradata"
+ora_profile::database::db_definition::db_recovery_file_dest:              "C:\\u03\\fast_recovery_area"
 
 
 # ------------------------------------------------------------------------------

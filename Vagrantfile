@@ -44,14 +44,18 @@ pe_puppet_group_id = 993
 #
 # Choose your version of Puppet Enterprise
 #
-puppet_installer   = 'puppet-enterprise-2019.0.0-el-7-x86_64/puppet-enterprise-installer'
+# puppet_installer   = 'puppet-enterprise-2018.1.3-el-7-x86_64/puppet-enterprise-installer'
+# puppet_installer   = 'puppet-enterprise-2019.0.0-el-7-x86_64/puppet-enterprise-installer'
+puppet_installer   = 'puppet-enterprise-2019.0.1-el-7-x86_64/puppet-enterprise-installer'
 
 Vagrant.configure('2') do |config|
   link_software
 
   config.ssh.insert_key = false
   servers.each do |name, server|
+
     config.vm.define name do |srv|
+
       srv.vm.communicator = server['protocol'] || 'ssh'
       srv.vm.box = ENV['BASE_IMAGE'] ? (ENV['BASE_IMAGE']).to_s : server['box']
       hostname = name.split('-').last # First part contains type of node
@@ -60,22 +64,25 @@ Vagrant.configure('2') do |config|
         srv.vm.network 'private_network', ip: server['public_ip']
         # srv.vm.network 'private_network', ip: server['private_ip'], virtualbox__intnet: true
       else
+        srv.vm.provider "virtualbox" do |v|
+          v.default_nic_type = "82545EM"
+        end
         srv.vm.hostname = "#{hostname}"
         srv.vm.network 'private_network', ip: server['public_ip']
         config.winrm.ssl_peer_verification = false
         config.winrm.retry_delay = 60
         config.winrm.retry_limit = 10
-        end
+      end
       srv.vm.synced_folder '.', '/vagrant', type: :virtualbox
       case server['type']
       when 'masterless'
         srv.vm.box = 'enterprisemodules/centos-7.3-x86_64-nocm' unless server['box']
-        config.trigger.after :up do |trigger|
-          #
-          # Fix hostnames because Vagrant mixes it up.
-          #
+        # config.trigger.after :up do |trigger|
+        #   #
+        #   # Fix hostnames because Vagrant mixes it up.
+        #   #
           if srv.vm.communicator == 'ssh'
-            trigger.run_remote = {inline: <<~EOD}
+            srv.vm.provision :shell, {inline: <<~EOD}
               cat > /etc/hosts<< "EOF"
               127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4
               192.168.253.10 master.example.com puppet master
@@ -86,22 +93,22 @@ Vagrant.configure('2') do |config|
               /opt/puppetlabs/puppet/bin/puppet apply /etc/puppetlabs/code/environments/production/manifests/site.pp || true
             EOD
           else
-            trigger.run_remote = {inline: <<~EOD}
+            srv.vm.provision :shell, {inline: <<~EOD}
               cd c:\\vagrant\\vm-scripts
               .\\install_puppet.ps1
               cd c:\\vagrant\\vm-scripts
               .\\setup_puppet.ps1
-              iex "& 'C:\\Program Files\\Puppet Labs\\Puppet\\bin\\puppet' resource service puppet ensure=stopped"
-              iex "& 'C:\\Program Files\\Puppet Labs\\Puppet\\bin\\puppet' resource service puppet ensure=stopped"
-              iex "& 'C:\\Program Files\\Puppet Labs\\Puppet\\bin\\puppet' apply c:\\vagrant\\manifests\\site.pp -t"
+              iex "& 'C:\\puppetlabs\\bin\\puppet' resource service puppet ensure=stopped"
+              iex "& 'C:\\puppetlabs\\bin\\puppet' resource service puppet ensure=stopped"
+              iex "& 'C:\\puppetlabs\\bin\\puppet' apply c:\\vagrant\\manifests\\site.pp -t"
             EOD
           end
-        end
-        config.trigger.after :provision do |trigger|
+        # end
+        # config.trigger.after :provision do |trigger|
           if srv.vm.communicator == 'ssh'
-            trigger.run_remote = {inline: "puppet apply /etc/puppetlabs/code/environments/production/manifests/site.pp || true"}
+            srv.vm.provision :shell, {inline: "puppet apply /etc/puppetlabs/code/environments/production/manifests/site.pp || true"}
           end
-        end
+        # end
 
       when 'pe-master'
         srv.vm.box = 'enterprisemodules/centos-7.3-x86_64-nocm' unless server['box']
@@ -176,6 +183,8 @@ Vagrant.configure('2') do |config|
         vb.memory = server['ram'] || 4096
         vb.customize ['modifyvm', :id, '--ioapic', 'on']
         vb.customize ['modifyvm', :id, '--name', name]
+        vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+        vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
         if server['virtualboxorafix'] == 'enable'
           vb.customize ['setextradata', :id, 'VBoxInternal/CPUM/HostCPUID/Cache/Leaf', '0x4']
           vb.customize ['setextradata', :id, 'VBoxInternal/CPUM/HostCPUID/Cache/SubLeaf', '0x4']

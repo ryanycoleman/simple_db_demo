@@ -30,5 +30,11 @@ class profile::base::vagrant()
         user    => root,
         unless  => "/bin/grep '^/var/swap.1' /etc/fstab 2>/dev/null",
       }
+    } elsif $::kernel == 'windows' {
+      # For performance reasons in VirtualBox
+      exec { 'disable windows defender':
+        command  => 'Set-MpPreference -DisableArchiveScanning $true -DisableRealtimeMonitoring $true',
+        provider => 'powershell',
+      }
     }
 }
