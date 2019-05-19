@@ -12,7 +12,7 @@ All nodes are available to test with Puppet masterless. To do so, add `ml-` for 
 $ vagrant up <ml-db112|ml-db121|ml-db122|ml-db180|ml-db193>
 ```
 
-## Staring the nodes with PE
+## Starting the nodes with PE
 
 You can also test with a Puppet Enterprise server. To do so, add `pe-` for the name when using vagrant:
 
@@ -36,28 +36,55 @@ The software must be placed in `modules/software/files`. It must contain the nex
 - [puppet-enterprise-2018.1.3-el-7-x86_64.tar.gz (Extracted tar)](https://puppet.com/download-puppet-enterprise)
 
 ### Oracle Database version 19.3.0.0
--LINUX.X64_193000_db_home.zip
+- `LINUX.X64_193000_db_home.zip`
 
 ### Oracle Database version 18.0.0.0
-- LINUX.X64_180000_db_home.zip
+- `LINUX.X64_180000_db_home.zip`
 
 ### Oracle Database version 12.2.0.1
-- linuxx64_12201_database.zip
-- p6880880_121010_Linux-x86-64.zip (Opatch version)
-- p27468969_122010_Linux-x86-64.zip
+- `linuxx64_12201_database.zip`
+- `p6880880_121010_Linux-x86-64.zip` (Opatch version)
+- `p27468969_122010_Linux-x86-64.zip`
 
 ### Oracle Database version 12.1.0.2
-- linuxamd64_12102_database_1of2.zip
-- linuxamd64_12102_database_2of2.zip
+- `linuxamd64_12102_database_1of2.zip`
+- `linuxamd64_12102_database_2of2.zip`
 
 ### Oracle Database version 11.2.0.4
-- p13390677_112040_Linux-x86-64_1of7.zip
-- p13390677_112040_Linux-x86-64_2of7.zip
+- `p13390677_112040_Linux-x86-64_1of7.zip`
+- `p13390677_112040_Linux-x86-64_2of7.zip`
 
 You can download these file from
 [here](http://support.oracle.com)
 or
 [here](http://www.oracle.com/technetwork/database/enterprise-edition/downloads/oracle12c-linux-12201-3608234.html)
 
-### Common issues
-- Sometimes virtual machine hangs while ssh connection during executions of vagrant script. The way to fix it is log in to the machine, as root, and run dhclient. 
+## Running the Windows demos
+
+Since May 2019, our modules also support Windows. The demo is changed to run on windows too. because of Powershell security requirements, however, vagrant cannot do the whole Oracle/puppet setup. You must start Puppet from the machine itself. First step is to provision the system and get Puppet installed.
+
+```
+$ vagrant up --no-provision ml-db180
+```
+
+After this is finished, open the VirtualBox console and log i nto the Windows machine with the `Administrator` account. The password of the Vagrant box is `vagrant`. The start the Command Prompt and run Puppet from there:
+
+```
+$ puppet apply c:\vagrant\manifests\site.pp -t
+```
+
+This will start a normal Puppet run and install and manage Oracle.
+
+### Required software
+
+The software must be placed in `modules/software/files`. For the Oracle 18 database in windows, It must contain:
+
+- `WINDOWS.X64_180000_db_home.zip`
+
+and the Puppet agent for Windows:
+
+- `puppet-agent-6.4.2-x64.msi`
+
+## Common issues
+
+- Sometimes Linux virtual machine hangs while ssh connection during executions of vagrant script. The way to fix it is log in to the machine, as root, and run dhclient. 

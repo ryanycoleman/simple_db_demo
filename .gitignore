@@ -64,3 +64,6 @@
 /modules/augeasproviders_sysctl
 /modules/firewall
 /modules/firewalld
+/modules/powershell
+/modules/registry
+/modules/chocolatey
