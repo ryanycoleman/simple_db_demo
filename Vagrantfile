@@ -194,6 +194,17 @@ def puppet_agent_setup(config, server, srv, hostname)
         #{server['additional_hosts'] ? server['additional_hosts'] : ''}
         EOF
         curl -k https://#{server['puppet_master']}.#{server['domain_name']}:8140/packages/current/install.bash | sudo bash
+        #
+        # The agent installation also automatically start's it. In production, this is what you want. For now we
+        # want the first run to be interactive, so we see the output. Therefore, we stop the agent and wait
+        # for it to be stopped before we start the interactive run
+        #
+        pkill -9 -f "puppet.*agent.*"
+        /opt/puppetlabs/puppet/bin/puppet agent -t; exit 0
+        #
+        # After the interactive run is done, we restart the agent in a normal way.
+        #
+        systemctl start puppet
         EOD
       else
         trigger.run_remote = {inline: <<~EOD}

@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    byebug (11.0.1)
     colored (1.2)
     cri (2.15.6)
     faraday (0.13.1)
@@ -52,9 +53,11 @@ GEM
 
 PLATFORMS
   ruby
+  x86_64-darwin-17
   x86_64-darwin-18
 
 DEPENDENCIES
+  byebug
   ra10ke
 
 BUNDLED WITH
