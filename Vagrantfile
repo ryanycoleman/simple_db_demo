@@ -114,6 +114,19 @@ def masterless_setup(config, server, srv, hostname)
   end
 end
 
+def masterless_windows_setup(config, server, srv, hostname)
+  srv.vm.box = 'peru/windows-server-2016-standard-x64-eval' unless server['box']
+  srv.vm.hostname = "#{hostname}"
+  srv.vm.provision :shell, inline: <<~EOD
+  Set-ExecutionPolicy Bypass -Scope Process -Force
+  cd c:\\vagrant\\vm-scripts
+  .\\install_puppet.ps1
+  cd c:\\vagrant\\vm-scripts
+  .\\setup_puppet.ps1
+  iex "& 'C:\\Program Files\\Puppet Labs\\Puppet\\bin\\puppet' resource service puppet ensure=stopped"
+  iex "& 'C:\\Program Files\\Puppet Labs\\Puppet\\bin\\puppet' apply c:\\vagrant\\manifests\\site.pp -t"
+  EOD
+end
 
 def raw_setup(config, server, srv, hostname)
   config.trigger.after :up do |trigger|
@@ -448,9 +461,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end
 
       config.vm.provider :virtualbox do |vb|
-        # vb.gui = true
+        vb.gui = true
         vb.cpus = server['cpucount'] || 1
         vb.memory = server['ram'] || 4096
+        # vb.name = name
 
         # Setup config fixes for Oracle product
         virtualboxorafix(vb) if server['virtualboxorafix']

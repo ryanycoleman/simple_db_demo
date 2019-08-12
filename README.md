@@ -9,7 +9,7 @@ The name of the node indicates which version of Oracle will be installed in it i
 All nodes are available to test with Puppet masterless. To do so, add `ml-` for the name when using vagrant:
 
 ```
-$ vagrant up <ml-db112|ml-db121|ml-db122|ml-db180|ml-db193>
+$ vagrant up <ml-db112|ml-db121|ml-db122|ml-db180|ml-db190>
 ```
 
 ## Starting the nodes with PE
@@ -18,7 +18,7 @@ You can also test with a Puppet Enterprise server. To do so, add `pe-` for the n
 
 ```
 $ vagrant up pe-dbmaster
-$ vagrant up <pe-db112|pe-db121|pe-db122|pe-db180|pe-db193>
+$ vagrant up <pe-db112|pe-db121|pe-db122|pe-db180|pe-db190>
 ```
 
 ## ordering
@@ -26,7 +26,7 @@ $ vagrant up <pe-db112|pe-db121|pe-db122|pe-db180|pe-db193>
 You must always use the specified order:
 
 1. master
-2. <db112|db121|db122|db180|db193>
+2. <db112|db121|db122|db180|db190>
 
 ## Required software
 
@@ -35,7 +35,7 @@ The software must be placed in `modules/software/files`. It must contain the nex
 ### Puppet Enterprise (Not needed when using masterless deployments)
 - [puppet-enterprise-2018.1.3-el-7-x86_64.tar.gz (Extracted tar)](https://puppet.com/download-puppet-enterprise)
 
-### Oracle Database version 19.3.0.0
+### Oracle Database version 19.0.0.0
 - `LINUX.X64_193000_db_home.zip`
 
 ### Oracle Database version 18.0.0.0

@@ -24,7 +24,7 @@ pe-defaults:
 
 #
 # The settings for the Puppet Enterprise Server
-#  
+#
 pe-dbmaster:
   public_ip:       '192.168.253.10'
   cpucount:         2
@@ -59,16 +59,18 @@ ml-db180:
   software_files:
     - LINUX.X64_180000_db_home.zip
 
-ml-db193:
-  public_ip:        '192.168.253.193'
+ml-db190:
+  public_ip:        '192.168.253.190'
   software_files:
     - LINUX.X64_193000_db_home.zip
+
 ml-windb180:
   public_ip:        '192.168.253.181'
   protocol:         winrm
   box:              mrlesmithjr/windows2019
   cpucount:         4
   ram:              8192
+  type:             masterless_windows_setupwe
   software_files:
     - WINDOWS.X64_180000_db_home.zip
     - puppet-agent-6.4.2-x64.msi
@@ -99,7 +101,7 @@ pe-db180:
   software_files:
     - LINUX.X64_180000_db_home.zip
 
-pe-db193:
-  public_ip:        '192.168.253.193'
+pe-db190:
+  public_ip:        '192.168.253.190'
   software_files:
     - LINUX.X64_193000_db_home.zip

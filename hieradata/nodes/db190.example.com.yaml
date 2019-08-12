@@ -16,8 +16,8 @@ ora_profile::database::db_patches:                                        skip
 #  Settings for database
 #
 # ------------------------------------------------------------------------------
-ora_profile::database::dbname:                                            DB193
-ora_profile::database::version:                                           19.3.0.0
+ora_profile::database::dbname:                                            DB190
+ora_profile::database::version:                                           19.0.0.0
 ora_profile::database::oracle_home:                                       /u01/app/oracle/product/%{lookup('ora_profile::database::version')}/db_home1
 
 
@@ -46,4 +46,4 @@ ora_profile::database::db_definition::init_ora_template:                  "profi
 #  Settings for database::db_listener
 #
 # ------------------------------------------------------------------------------
-ora_profile::database::db_listener::sqlnet_version:                       '19.3'
+ora_profile::database::db_listener::sqlnet_version:                       '19.0'
