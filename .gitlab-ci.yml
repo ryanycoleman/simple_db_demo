@@ -6,15 +6,21 @@ include:
   - project: 'enterprisemodules/gitlab_ci'
     file: 'gitlab-ci.yml'
 
-.demo_check:
-  stage: acceptance
-  tags:
-    - demo_check
-  script:
-    - vagrant up $server
-  after_script:
-    - vagrant destroy --force $server
-    # - rm -rf $CI_PROJECT_DIR
+# db190_demo_check:
+#   extends: .demo_check
+#   variables:
+#     server: ml-db190
+#   before_script:
+#     - mkdir -p modules/software/files
+#     - cp ~/software/LINUX.X64_193000_db_home.zip modules/software/files
+
+db180_demo_check:
+  extends: .demo_check
+  variables:
+    server: ml-db180
+  before_script:
+    - mkdir -p modules/software/files
+    - cp ~/software/LINUX.X64_180000_db_home.zip modules/software/files
 
 db122_demo_check:
   extends: .demo_check
@@ -25,3 +31,12 @@ db122_demo_check:
     - cp ~/software/linuxx64_12201_database.zip modules/software/files
     - cp ~/software/p6880880_121010_Linux-x86-64.zip modules/software/files
     - cp ~/software/p27468969_122010_Linux-x86-64.zip modules/software/files
+
+db121_demo_check:
+  extends: .demo_check
+  variables:
+    server: ml-db121
+  before_script:
+    - mkdir -p modules/software/files
+    - cp ~/software/linuxamd64_12102_database_1of2.zip modules/software/files
+    - cp ~/software/linuxamd64_12102_database_2of2.zip modules/software/files
