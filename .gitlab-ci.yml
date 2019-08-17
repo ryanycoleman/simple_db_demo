@@ -6,13 +6,13 @@ include:
   - project: 'enterprisemodules/gitlab_ci'
     file: 'gitlab-ci.yml'
 
-# db190_demo_check:
-#   extends: .demo_check
-#   variables:
-#     server: ml-db190
-#   before_script:
-#     - mkdir -p modules/software/files
-#     - cp ~/software/LINUX.X64_193000_db_home.zip modules/software/files
+db190_demo_check:
+  extends: .demo_check
+  variables:
+    server: ml-db190
+  before_script:
+    - mkdir -p modules/software/files
+    - cp ~/software/LINUX.X64_193000_db_home.zip modules/software/files
 
 db180_demo_check:
   extends: .demo_check
