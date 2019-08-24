@@ -67,3 +67,4 @@
 /modules/powershell
 /modules/registry
 /modules/chocolatey
+/puppet_version
