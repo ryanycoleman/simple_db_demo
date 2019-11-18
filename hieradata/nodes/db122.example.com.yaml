@@ -1,7 +1,51 @@
 ---
 deployment_zone: vagrant
 
-role: role::oradb::simple_db
+role: role::oradb::secured_db
 
 ora_profile::database::dbname:                            DB122
-ora_profile::database::db_patches:                        skip
+
+ora_profile::database::db_init_params::parameters:
+  spfile/archive_lag_target:
+    value: 1900 
+  memory/archive_lag_target:
+    value: 1900
+
+ora_profile::database::db_tablespaces::list:
+  APP_TS@DB122:
+    ensure:                 present
+    autoextend:             'on'
+    contents:               permanent
+    datafile:               '/u02/oradata/DB122/app_ts.dbs'
+    extent_management:      local
+    logging:                'yes'
+    max_size:               '100M'
+    next:                   '5M'
+    size:                   '10M'
+
+ora_profile::database::db_profiles::list:
+  APP_PROFILE@DB122:
+    ensure:                     present
+    failed_login_attempts:      5
+    idle_time:                  15
+    password_grace_time:        5
+    password_life_time:         90
+    password_lock_time:         1
+    password_reuse_max:         20
+    password_reuse_time:        365
+    password_verify_function:   'ORA12C_STRONG_VERIFY_FUNCTION'
+
+ora_profile::database::db_users::list:
+  APP@DB122:
+    ensure:                     present
+    locked:                     true
+    profile:                    APP_PROFILE
+    temporary_tablespace:       TEMP
+    default_tablespace:         USERS 
+    expired:                    true
+
+ora_profile::database::db_definition:                                     ora_profile::database::db_definition_template
+ora_profile::database::db_definition_template::data_file_destination:     /u02/oradata
+ora_profile::database::db_definition_template::recovery_area_destination: /u03/fast_recovery_area
+ora_profile::database::db_definition_template::storage_type:              FS
+

@@ -186,12 +186,8 @@ def puppet_agent_setup(config, server, srv, hostname)
     # Fix hostnames because Vagrant mixes it up.
     #
     if srv.vm.communicator == 'ssh'
+      srv.vm.provision :shell, inline: HOSTS_FILE_COMMANDS
       trigger.run_remote = {inline: <<~EOD}
-        cat > /etc/hosts<< "EOF"
-        127.0.0.1 localhost.localdomain localhost4 localhost4.localdomain4
-        #{server['public_ip']} #{hostname}.#{server['domain_name']} #{hostname}
-        #{server['additional_hosts'] ? server['additional_hosts'] : ''}
-        EOF
         curl -k https://#{server['puppet_master']}.#{server['domain_name']}:8140/packages/current/install.bash | sudo bash
         #
         # The agent installation also automatically start's it. In production, this is what you want. For now we

@@ -26,3 +26,5 @@ ora_profile::database::source:                                            puppet
 # ------------------------------------------------------------------------------
 ora_profile::database::db_definition::system_password:                    Welcome01
 ora_profile::database::db_definition::sys_password:                       Change_on_1nstall
+
+ora_profile::database::db_patches:                        skip
