@@ -11,6 +11,9 @@ db190_demo_check:
   variables:
     server: ml-db190
   before_script:
+    - echo -e "machine gitlab.com\nlogin gitlab-ci-token\npassword ${CI_JOB_TOKEN}" > .netrc
+    - if [ "$USE_LATEST_MODULES" == "yes" ]; then touch ./use_latest_modules ; fi
+    - if [ $PUPPET_VERSION ]; then echo $PUPPET_VERSION > ./puppet_version ; fi
     - mkdir -p modules/software/files
     - cp ~/software/LINUX.X64_193000_db_home.zip modules/software/files
 
@@ -19,6 +22,9 @@ db180_demo_check:
   variables:
     server: ml-db180
   before_script:
+    - echo -e "machine gitlab.com\nlogin gitlab-ci-token\npassword ${CI_JOB_TOKEN}" > .netrc
+    - if [ "$USE_LATEST_MODULES" == "yes" ]; then touch ./use_latest_modules ; fi
+    - if [ $PUPPET_VERSION ]; then echo $PUPPET_VERSION > ./puppet_version ; fi
     - mkdir -p modules/software/files
     - cp ~/software/LINUX.X64_180000_db_home.zip modules/software/files
 
@@ -27,6 +33,9 @@ db122_demo_check:
   variables:
     server: ml-db122
   before_script:
+    - echo -e "machine gitlab.com\nlogin gitlab-ci-token\npassword ${CI_JOB_TOKEN}" > .netrc
+    - if [ "$USE_LATEST_MODULES" == "yes" ]; then touch ./use_latest_modules ; fi
+    - if [ $PUPPET_VERSION ]; then echo $PUPPET_VERSION > ./puppet_version ; fi
     - mkdir -p modules/software/files
     - cp ~/software/linuxx64_12201_database.zip modules/software/files
     - cp ~/software/p6880880_121010_Linux-x86-64.zip modules/software/files
@@ -37,6 +46,9 @@ db121_demo_check:
   variables:
     server: ml-db121
   before_script:
+    - echo -e "machine gitlab.com\nlogin gitlab-ci-token\npassword ${CI_JOB_TOKEN}" > .netrc
+    - if [ "$USE_LATEST_MODULES" == "yes" ]; then touch ./use_latest_modules ; fi
+    - if [ $PUPPET_VERSION ]; then echo $PUPPET_VERSION > ./puppet_version ; fi
     - mkdir -p modules/software/files
     - cp ~/software/linuxamd64_12102_database_1of2.zip modules/software/files
     - cp ~/software/linuxamd64_12102_database_2of2.zip modules/software/files
