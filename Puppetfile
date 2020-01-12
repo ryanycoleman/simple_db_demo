@@ -1,4 +1,5 @@
 mod 'puppetlabs-stdlib'
+mod 'puppetlabs-pwshlib'
 mod 'puppetlabs-concat'
 mod 'stm-debconf'
 mod 'saz-limits'
