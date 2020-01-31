@@ -8,5 +8,3 @@ include easy_type::license::activate  # Always include the license class. This m
 schedule { 'maintenance-window':
   range  => "00:00 - 23:59"  # Change to your requirements
 }
-
-lookup('role', String).include
